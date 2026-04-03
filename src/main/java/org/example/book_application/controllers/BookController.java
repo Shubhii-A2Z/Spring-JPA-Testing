@@ -1,5 +1,6 @@
 package org.example.book_application.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.book_application.models.Book;
 import org.example.book_application.service.BookService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@Slf4j // automatically creating a logger for your class
 
 public class BookController {
 
@@ -30,7 +32,10 @@ public class BookController {
     @GetMapping("/book/{name}")
     public ResponseEntity<Book> getBookByName(@PathVariable("name") String name){
         Book bookByName=bookService.getBookByName(name);
-        if(bookByName==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if(bookByName==null){
+            log.warn("No such book exists!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.status(HttpStatus.OK).body(bookByName);
     }
 
