@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("bookService")
 @Slf4j // automatically creating a logger for your class
@@ -36,5 +37,12 @@ public class BookService {
     public List<Book> getAllBooks() {
         List<Book> books=bookRepository.getAll();
         return books;
+    }
+
+    public Optional<Book> deleteBookById(Integer id){
+        Optional<Book> bookToBeDeleted=bookRepository.findById(id);
+        if(bookToBeDeleted.isEmpty()) return Optional.empty();
+        bookRepository.deleteById(id);
+        return bookToBeDeleted;
     }
 }

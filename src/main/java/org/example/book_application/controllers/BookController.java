@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -48,5 +49,14 @@ public class BookController {
             return ResponseHandler.generateResponse("No such book exists!",HttpStatus.NO_CONTENT,null);
         }
         return ResponseHandler.generateResponse("Fetched All Books",HttpStatus.OK,books);
+    }
+
+    @DeleteMapping("/book/{bookId}")
+    public ResponseEntity<?> deleteBookById(@PathVariable("bookId") Integer bookId){
+        Optional<Book> book=bookService.deleteBookById(bookId);
+        if(book.isEmpty()) {
+            return ResponseHandler.generateResponse("Book With Given Id Not Found", HttpStatus.NOT_FOUND, null);
+        }
+        return ResponseHandler.generateResponse("Deleted Book With Given Id",HttpStatus.OK,book.get());
     }
 }
