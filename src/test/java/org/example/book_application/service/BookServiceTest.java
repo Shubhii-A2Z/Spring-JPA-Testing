@@ -23,6 +23,26 @@ public class BookServiceTest {
     @InjectMocks // Injects all required dependencies inside (Repository will be injected inside of Service)
     BookService bookService;
 
+    @BeforeAll
+    static void beforeAll(){
+        System.out.println("Before All Called for initialisation");
+    }
+
+    @BeforeEach
+    void beforeEach(){
+        System.out.println("Before Each Called for initialisation");
+    }
+
+    @AfterEach
+    void afterEach(){
+        System.out.println("After Each Called for cleanup/reset of resources");
+    }
+
+    @AfterAll
+    static void afterAll(){
+        System.out.println("After All Called for cleanup/reset of resources");
+    }
+
     @Test
     void addBookShouldAddSuccessfully(){
 
