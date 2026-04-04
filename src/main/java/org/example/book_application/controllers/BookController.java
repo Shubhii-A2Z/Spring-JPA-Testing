@@ -3,6 +3,7 @@ package org.example.book_application.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.example.book_application.models.Book;
 import org.example.book_application.service.BookService;
+import org.example.book_application.utils.ResponseHandler;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,19 +31,22 @@ public class BookController {
     }
 
     @GetMapping("/book/{name}")
-    public ResponseEntity<Book> getBookByName(@PathVariable("name") String name){
+    public ResponseEntity<?> getBookByName(@PathVariable("name") String name){
         Book bookByName=bookService.getBookByName(name);
         if(bookByName==null){
             log.warn("No such book exists!");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseHandler.generateResponse("No such book exists!",HttpStatus.NOT_FOUND,null);
         }
         return ResponseEntity.status(HttpStatus.OK).body(bookByName);
     }
 
     @GetMapping("/books")
-    public ResponseEntity<List<Book>> getBooks(){
+    public ResponseEntity<?> getBooks(){
         List<Book> books=bookService.getAllBooks();
-        if(books.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        if(books.isEmpty()){
+            log.warn("No content");
+            return ResponseHandler.generateResponse("No such book exists!",HttpStatus.NO_CONTENT,null);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(books);
     }
 }
