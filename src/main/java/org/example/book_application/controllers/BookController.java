@@ -25,9 +25,9 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Book> addBook(@RequestBody Book book){
+    public ResponseEntity<?> addBook(@RequestBody Book book){
         Book savedBook=bookService.add(book);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
+        return ResponseHandler.generateResponse("Successfully added book",HttpStatus.CREATED,savedBook);
     }
 
     @GetMapping("/book/{name}")
@@ -37,7 +37,7 @@ public class BookController {
             log.warn("No such book exists!");
             return ResponseHandler.generateResponse("No such book exists!",HttpStatus.NOT_FOUND,null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(bookByName);
+        return ResponseHandler.generateResponse("Success",HttpStatus.OK,bookByName);
     }
 
     @GetMapping("/books")
@@ -47,6 +47,6 @@ public class BookController {
             log.warn("No content");
             return ResponseHandler.generateResponse("No such book exists!",HttpStatus.NO_CONTENT,null);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(books);
+        return ResponseHandler.generateResponse("Fetched All Books",HttpStatus.OK,books);
     }
 }
